@@ -1,7 +1,7 @@
 const express = require("express");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
-
+const dotenv = require("dotenv").config();
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -12,12 +12,11 @@ app.use(express.urlencoded({
 
 const Document = require("./models/Document");
 
-mongoose.connect("mongodb://localhost/codeshare", {
 
-    useNewUrlParser: true
+mongoose.connect(`mongodb+srv://${process.env.username}:${process.env.password}@cluster0.nfemt.mongodb.net/CodeDB?retryWrites=true&w=majority`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 });
-
-
 
 app.get("/", function (req, res) {
     const code = `# CodeShare
@@ -80,6 +79,6 @@ app.post("/save", async (req, res) => {
     }
 });
 
-app.listen(3000, function () {
+app.listen(process.env.PORT || 3000, function () {
     console.log("Server is running on port 3000");
 });
